@@ -1,0 +1,6 @@
+argparse
+beautifulsoup4
+langchain
+lxml
+pymongo
+requests
