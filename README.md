@@ -29,7 +29,7 @@ data = loader.load()
 ```
 
  ### Step 2: Transform
- Now that we have a bunch of text loaded, it needs to be split into smaller chunks so we can tease out the relevant portion based on our search query. For this example we'll use the simple [Split by character](https://python.langchain.com/docs/modules/data_connection/document_transformers/text_splitters/character_text_splitter) method, capturing sentences by splitting on the newline character. You can tune the chunk_size to your liking. Smaller numbers will lead to more documents, and vice-versa.
+ Now that we have a bunch of text loaded, it needs to be split into smaller chunks so we can tease out the relevant portion based on our search query. For this example we'll use the simple [Split by character](https://python.langchain.com/docs/modules/data_connection/document_transformers/text_splitters/character_text_splitter) method, capturing sentences by splitting on the newline character. You can tune the `chunk_size` to your liking. Smaller numbers will lead to more documents, and vice-versa.
 
 ```python
 from langchain.text_splitter import CharacterTextSplitter

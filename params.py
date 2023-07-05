@@ -1,4 +1,4 @@
-openai_api_key = "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"
+openai_api_key = '<OpenAI API Key>'
 
 mongodb_conn_string = '<Application connection string of Atlas cluster>'
 db_name = "search_db"
