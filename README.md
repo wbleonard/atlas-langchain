@@ -1,5 +1,5 @@
 
-Semantic Search Made Easy With LangChain and MongoDB
+# Semantic Search Made Easy With LangChain and MongoDB
 
 Enabling semantic search on user-specific data is a multi-step process that includes loading, transforming, embedding and storing data before it can be queried. 
 
