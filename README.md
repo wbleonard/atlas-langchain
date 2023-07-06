@@ -66,7 +66,7 @@ docsearch = MongoDBAtlasVectorSearch.from_documents(
 )
 ```
 
-You'll find the complete script in [Vectorize.py](Vectorize.py), which needs to be run once per data source (and you could easily modify the code to iterate over multiple data sources).
+You'll find the complete script in [vectorize.py](vectorize.py), which needs to be run once per data source (and you could easily modify the code to iterate over multiple data sources).
 
 ### Step 5: Index the Vector Embeddings
 The final step before we can query the data is to create a [search index on the stored embeddings](https://www.mongodb.com/docs/atlas/atlas-search/field-types/knn-vector/). 
