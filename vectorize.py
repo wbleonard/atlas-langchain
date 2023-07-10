@@ -2,17 +2,13 @@
 
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
-from langchain.document_loaders import BSHTMLLoader
+from langchain.document_loaders import WebBaseLoader
 from langchain.vectorstores import MongoDBAtlasVectorSearch
 from pymongo import MongoClient
 import params
-import utils
-import sys
 
 # Step 1: Load
-filename = "wiki-att.html"
-utils.save_web_page_as_html("https://en.wikipedia.org/wiki/AT%26T", filename)
-loader = BSHTMLLoader(filename)
+loader = WebBaseLoader("https://en.wikipedia.org/wiki/AT%26T")
 data = loader.load()
 
 # Step 2: Transform

@@ -20,11 +20,11 @@ pip install -r requirements.txt
 ### Step 1: Load
 There's no lacking for sources of data: Slack, YouTube, Git, Excel, Reddit, Twitter, etc., and [LangChain provides a growing list](https://python.langchain.com/docs/modules/data_connection/document_loaders/) of integrations that includes this list and many more.
 
-For this exercise, we're going to use the [BeautifulSoup4 HTML loader](https://python.langchain.com/docs/modules/data_connection/document_loaders/how_to/html) to load the [Wikipedia page for AT&T](https://en.wikipedia.org/wiki/AT%26T). 
+For this exercise, we're going to use the [WebBaseLoader](https://python.langchain.com/docs/modules/data_connection/document_loaders/integrations/web_base) to load the [Wikipedia page for AT&T](https://en.wikipedia.org/wiki/AT%26T). 
 
 ```python
-from langchain.document_loaders import BSHTMLLoader
-loader = BSHTMLLoader(wiki-att.html)
+from langchain.document_loaders import WebBaseLoader
+loader = WebBaseLoader("https://en.wikipedia.org/wiki/AT%26T")
 data = loader.load()
 ```
 
