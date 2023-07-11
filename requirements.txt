@@ -1,6 +1,5 @@
 argparse
-beautifulsoup4
-langchain
+langchain>=0.0.209
 lxml
 pymongo
 requests

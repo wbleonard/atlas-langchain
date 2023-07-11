@@ -28,13 +28,13 @@ loader = WebBaseLoader("https://en.wikipedia.org/wiki/AT%26T")
 data = loader.load()
 ```
 
- ### Step 2: Transform
- Now that we have a bunch of text loaded, it needs to be split into smaller chunks so we can tease out the relevant portion based on our search query. For this example we'll use the simple [Split by character](https://python.langchain.com/docs/modules/data_connection/document_transformers/text_splitters/character_text_splitter) method, capturing sentences by splitting on the newline character. You can tune the `chunk_size` to your liking. Smaller numbers will lead to more documents, and vice-versa.
+ ### Step 2: Transform (Split)
+ Now that we have a bunch of text loaded, it needs to be split into smaller chunks so we can tease out the relevant portion based on our search query. For this example we'll use the recommended [RecursiveCharacterTextSplitter](https://python.langchain.com/docs/modules/data_connection/document_transformers/text_splitters/recursive_text_splitter). As I have it configured, it attempts to split on paragraphs ("\n\n"), then sentences("(?<=\. )")), using a chunk size of 1000 characters. So if a paragraph doesn't fit into 1000 characters, it will truncate at the next word it can fit to keep the chunk size under 1000 chacters. You can tune the `chunk_size` to your liking. Smaller numbers will lead to more documents, and vice-versa.
 
 ```python
-from langchain.text_splitter import CharacterTextSplitter
-text_splitter = CharacterTextSplitter(separator="\n",
-                                      chunk_size=500, chunk_overlap=0)
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0, separators=[
+                                               "\n\n", "\n", "(?<=\. )"], length_function=len)
 docs = text_splitter.split_documents(data)
 ```
 
@@ -51,7 +51,7 @@ embeddings = OpenAIEmbeddings(openai_api_key=params.openai_api_key)
 ```
 
 ### Step 4: Store
-You'll need a vector database to store the embeddings, and lucky for you MongoDB fits that bill. Even luckier for you, the folks at LangChain have a [MongoDB Atlas](https://python.langchain.com/docs/modules/data_connection/vectorstores/integrations/mongodb_atlas) module that will do all the heavy lifting for you!
+You'll need a vector database to store the embeddings, and lucky for you MongoDB fits that bill. Even luckier for you, the folks at LangChain have a [MongoDB Atlas](https://python.langchain.com/docs/modules/data_connection/vectorstores/integrations/mongodb_atlas) module that will do all the heavy lifting for you! Don't forget to add your MongoDB Atlas connection string to [params.py](params.py).
 
 ```python
 from pymongo import MongoClient
@@ -67,6 +67,10 @@ docsearch = MongoDBAtlasVectorSearch.from_documents(
 ```
 
 You'll find the complete script in [vectorize.py](vectorize.py), which needs to be run once per data source (and you could easily modify the code to iterate over multiple data sources).
+
+```zsh
+python3 vectorize.py
+```
 
 ### Step 5: Index the Vector Embeddings
 The final step before we can query the data is to create a [search index on the stored embeddings](https://www.mongodb.com/docs/atlas/atlas-search/field-types/knn-vector/). 
@@ -118,7 +122,7 @@ print(docs[0].page_content)
 ```
 
 ```zsh
--> python3 query.py -q "How big is AT&T?"
+python3 query.py -q "How big is AT&T?"
 
 Your question:
 --------------
