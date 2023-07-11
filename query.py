@@ -12,9 +12,9 @@ args = parser.parse_args()
 if args.question is None:
     # Some questions to try...
     query = "How big is AT&T?"
-    query = "Who founded AT&T?"
-    query = "Where is AT&T headquartered?"
-    query = "What venues are AT&T branded?"
+    query = "Who started AT&T?"
+    #query = "Where is AT&T based?"
+    #query = "What venues are AT&T branded?"
 else:
     query = args.question
 
