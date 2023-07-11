@@ -13,7 +13,7 @@ data = loader.load()
 
 # Step 2: Transform (Split)
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0, separators=[
-                                               "\n\n", "\n", "(?<=\. )", " ", ""], length_function=len)
+                                               "\n\n", "\n", "(?<=\. )", " "], length_function=len)
 docs = text_splitter.split_documents(data)
 print('Split into ' + str(len(docs)) + ' docs')
 
