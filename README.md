@@ -96,41 +96,44 @@ In the Atlas console, create a Search Index using the JSON Editor named `vsearch
 ![](./images/create-search-index2.png)
 
 
-## Query 
-Now that are source of data has been vectorized and indexed, we can begin our semantic search. LangChain lends an assist here too several methods, such as [similirity_search](https://api.python.langchain.com/en/latest/vectorstores/langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.html?highlight=atlas#langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.similarity_search) and [max_marginal_relevance_search](https://api.python.langchain.com/en/latest/vectorstores/langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.html?highlight=atlas#langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.max_marginal_relevance_search).  The latter optimizes for diversity among its selected documents.
+## Retrieve 
+We could now run a search, using methods like [similirity_search](https://api.python.langchain.com/en/latest/vectorstores/langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.html?highlight=atlas#langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.similarity_search) or [max_marginal_relevance_search](https://api.python.langchain.com/en/latest/vectorstores/langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.html?highlight=atlas#langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.max_marginal_relevance_search) and that would return the relevant slice of data, which in our case would be an entire paragraph. However, we can continue to harness the power of the LLM to [contextually compress](https://python.langchain.com/docs/modules/data_connection/retrievers/how_to/contextual_compression/) the response so that it more directly tries to answer our question. 
 
 ```python
-import params
 from pymongo import MongoClient
 from langchain.vectorstores import MongoDBAtlasVectorSearch
 from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.llms import OpenAI
+from langchain.retrievers import ContextualCompressionRetriever
+from langchain.retrievers.document_compressors import LLMChainExtractor
 
-# Initialize MongoDB python client
 client = MongoClient(params.mongodb_conn_string)
 collection = client[params.db_name][params.collection_name]
 
-# Initialize the vector store
 vectorStore = MongoDBAtlasVectorSearch(
     collection, OpenAIEmbeddings(openai_api_key=params.openai_api_key), index_name=params.index_name
 )
 
-# perform a similarity search between the embedding of the query and the embeddings of the documents
-query = "How big is AT&T?"
-docs = vectorStore.max_marginal_relevance_search(query, K=1)
+llm = OpenAI(openai_api_key=params.openai_api_key, temperature=0)
+compressor = LLMChainExtractor.from_llm(llm)
 
-print(docs[0].page_content)
+compression_retriever = ContextualCompressionRetriever(
+    base_compressor=compressor,
+    base_retriever=vectorStore.as_retriever()
+)
 ```
 
 ```zsh
-python3 query.py -q "How big is AT&T?"
+python3 query.py -q "Who started AT&T?"
 
 Your question:
---------------
-How big is AT&T?
-
-AIs answer:
 -------------
-AT&T Inc. is an American multinational telecommunications holding company headquartered at Whitacre Tower in Downtown Dallas, Texas.[5] It is the world's third-largest telecommunications company by revenue and the third-largest provider of mobile telephone services in the U.S.[6][7] As of 2023[update], AT&T was ranked 13th on the Fortune 500 rankings of the largest United States corporations, with revenues of $120.7 billion.[8]
+Who started AT&T?
+
+AI Response:
+-----------
+AT&T - Wikipedia
+"AT&T was founded as Bell Telephone Company by Alexander Graham Bell, Thomas Watson and Gardiner Greene Hubbard after Bell's patenting of the telephone in 1875."[25] "On December 30, 1899, AT&T acquired the assets of its parent American Bell Telephone, becoming the new parent company."[28]
 ```
 
 ## Resources
@@ -140,7 +143,7 @@ AT&T Inc. is an American multinational telecommunications holding company headqu
   * [WebBaseLoader](https://python.langchain.com/docs/modules/data_connection/document_loaders/integrations/web_base)
   * [RecursiveCharacterTextSplitter](https://python.langchain.com/docs/modules/data_connection/document_transformers/text_splitters/recursive_text_splitter)
   * [MongoDB Atlas module](https://python.langchain.com/docs/modules/data_connection/vectorstores/integrations/mongodb_atlas)  
+  * [Contextual Compression. ](https://python.langchain.com/docs/modules/data_connection/retrievers/how_to/contextual_compression/) 
   * [MongoDBAtlasVectorSearch API](https://api.python.langchain.com/en/latest/vectorstores/langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.html)
-    * [similarity_search](https://api.python.langchain.com/en/latest/vectorstores/langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.html?highlight=atlas#langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.similarity_search) - Return MongoDB documents most similar to query.
-    * [max_marginal_relevance_search](https://api.python.langchain.com/en/latest/vectorstores/langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.html?highlight=atlas#langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.max_marginal_relevance_search) - Maximal marginal relevance optimizes for similarity to query AND diversity among selected documents.
+
 
