@@ -2,14 +2,23 @@
 
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.document_loaders import WebBaseLoader
+from langchain.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import MongoDBAtlasVectorSearch
 from pymongo import MongoClient
 import params
 
 # Step 1: Load
-loader = WebBaseLoader("https://en.wikipedia.org/wiki/AT%26T")
-data = loader.load()
+loaders = [
+ WebBaseLoader("https://en.wikipedia.org/wiki/AT%26T"),
+ WebBaseLoader("https://en.wikipedia.org/wiki/Bank_of_America")
+]
+data = []
+for loader in loaders:
+    data.extend(loader.load())
+
+#loader = WebBaseLoader("https://en.wikipedia.org/wiki/AT%26T")
+#data = loader.load()
 
 # Step 2: Transform (Split)
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0, separators=[

@@ -12,9 +12,16 @@ args = parser.parse_args()
 if args.question is None:
     # Some questions to try...
     query = "How big is AT&T?"
-    query = "Who started AT&T?"
+    #query = "Who started AT&T?"
     #query = "Where is AT&T based?"
     #query = "What venues are AT&T branded?"
+    #query = "How big is BofA?"
+    #query = "When was the financial institution started?"
+    #query = "Does the bank have an investment arm?"
+    #query = "Where does the bank's revenue come from?"
+    #query = "Tell me about charity."
+    #query = "What buildings are BofA branded?"
+
 else:
     query = args.question
 
@@ -36,4 +43,5 @@ print("\nAIs answer:")
 print("-------------")
 docs = vectorStore.similarity_search(query)
 
+print(docs[0].metadata['title'])
 print(docs[0].page_content)
