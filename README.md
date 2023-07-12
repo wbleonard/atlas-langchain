@@ -51,7 +51,7 @@ embeddings = OpenAIEmbeddings(openai_api_key=params.openai_api_key)
 ```
 
 ### Step 4: Store
-You'll need a vector database to store the embeddings, and lucky for you MongoDB fits that bill. Even luckier for you, the folks at LangChain have a [MongoDB Atlas](https://python.langchain.com/docs/modules/data_connection/vectorstores/integrations/mongodb_atlas) module that will do all the heavy lifting for you! Don't forget to add your MongoDB Atlas connection string to [params.py](params.py).
+You'll need a vector database to store the embeddings, and lucky for you MongoDB fits that bill. Even luckier for you, the folks at LangChain have a [MongoDB Atlas module](https://python.langchain.com/docs/modules/data_connection/vectorstores/integrations/mongodb_atlas)  that will do all the heavy lifting for you! Don't forget to add your MongoDB Atlas connection string to [params.py](params.py).
 
 ```python
 from pymongo import MongoClient
@@ -97,7 +97,7 @@ In the Atlas console, create a Search Index using the JSON Editor named `vsearch
 
 
 ## Query 
-Now that are source of data has been vectorized and indexed, we can begin our semantic search. LangChain lends an assist here too, with their [similirity_search](https://api.python.langchain.com/en/latest/vectorstores/langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.html?highlight=atlas#langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.similarity_search) method.  
+Now that are source of data has been vectorized and indexed, we can begin our semantic search. LangChain lends an assist here too several methods, such as [similirity_search](https://api.python.langchain.com/en/latest/vectorstores/langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.html?highlight=atlas#langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.similarity_search) and [max_marginal_relevance_search](https://api.python.langchain.com/en/latest/vectorstores/langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.html?highlight=atlas#langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.max_marginal_relevance_search).  The latter optimizes for diversity among its selected documents.
 
 ```python
 import params
@@ -116,7 +116,7 @@ vectorStore = MongoDBAtlasVectorSearch(
 
 # perform a similarity search between the embedding of the query and the embeddings of the documents
 query = "How big is AT&T?"
-docs = vectorStore.similarity_search(query)
+docs = vectorStore.max_marginal_relevance_search(query, K=1)
 
 print(docs[0].page_content)
 ```
@@ -132,3 +132,15 @@ AIs answer:
 -------------
 AT&T Inc. is an American multinational telecommunications holding company headquartered at Whitacre Tower in Downtown Dallas, Texas.[5] It is the world's third-largest telecommunications company by revenue and the third-largest provider of mobile telephone services in the U.S.[6][7] As of 2023[update], AT&T was ranked 13th on the Fortune 500 rankings of the largest United States corporations, with revenues of $120.7 billion.[8]
 ```
+
+## Resources
+* [MongoDB Atlas](https://cloud.mongodb.com/)
+* [Open AI API key](https://platform.openai.com/account/api-keys)
+* [LangChain](https://python.langchain.com)
+  * [WebBaseLoader](https://python.langchain.com/docs/modules/data_connection/document_loaders/integrations/web_base)
+  * [RecursiveCharacterTextSplitter](https://python.langchain.com/docs/modules/data_connection/document_transformers/text_splitters/recursive_text_splitter)
+  * [MongoDB Atlas module](https://python.langchain.com/docs/modules/data_connection/vectorstores/integrations/mongodb_atlas)  
+  * [MongoDBAtlasVectorSearch API](https://api.python.langchain.com/en/latest/vectorstores/langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.html)
+    * [similarity_search](https://api.python.langchain.com/en/latest/vectorstores/langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.html?highlight=atlas#langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.similarity_search) - Return MongoDB documents most similar to query.
+    * [max_marginal_relevance_search](https://api.python.langchain.com/en/latest/vectorstores/langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.html?highlight=atlas#langchain.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.max_marginal_relevance_search) - Maximal marginal relevance optimizes for similarity to query AND diversity among selected documents.
+

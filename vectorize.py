@@ -17,9 +17,6 @@ data = []
 for loader in loaders:
     data.extend(loader.load())
 
-#loader = WebBaseLoader("https://en.wikipedia.org/wiki/AT%26T")
-#data = loader.load()
-
 # Step 2: Transform (Split)
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0, separators=[
                                                "\n\n", "\n", "(?<=\. )", " "], length_function=len)
