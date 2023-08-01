@@ -3,3 +3,6 @@ langchain>=0.0.231
 lxml
 pymongo
 requests
+bs4
+openai
+tiktoken

@@ -47,11 +47,11 @@ vectorStore = MongoDBAtlasVectorSearch(
 
 # perform a similarity search between the embedding of the query and the embeddings of the documents
 # print("\nQuery Response:")
-# print("---------------")
-# docs = vectorStore.max_marginal_relevance_search(query, K=1)
+print("---------------")
+docs = vectorStore.max_marginal_relevance_search(query, K=1)
 
-# print(docs[0].metadata['title'])
-# print(docs[0].page_content)
+print(docs[0].metadata['title'])
+print(docs[0].page_content)
 
 # Contextual Compression
 llm = OpenAI(openai_api_key=params.openai_api_key, temperature=0)
