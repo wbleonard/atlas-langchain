@@ -1,6 +1,6 @@
-openai_api_key = '<OpenAI API Key>'
+OPENAI_API_KEY = '<OpenAI API Key>'
 
-mongodb_conn_string = '<Application connection string of Atlas cluster>'
-db_name = "search_db"
-collection_name = "search_col"
-index_name = "vsearch_index"
+MONGODB_CONN_STRING = '<Application connection string of Atlas cluster>'
+DB_NAME = "langchain_search_db"
+COLL_NAME = "search_col"
+INDEX_NAME = "langchain_vsearch_index"
