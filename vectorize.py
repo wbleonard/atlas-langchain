@@ -50,4 +50,5 @@ docsearch = MongoDBAtlasVectorSearch.from_documents(
 
 # Step 5: Create Vector Search Index
 # https://python.langchain.com/v0.2/api_reference/mongodb/index.html
-docsearch.create_vector_search_index(dimensions=1536, update=True)
+# THIS ONLY WORKS ON DEDICATED CLUSTERS (M10+)
+# docsearch.create_vector_search_index(dimensions=1536, update=True)

@@ -2,7 +2,7 @@ import argparse
 import params
 from pymongo import MongoClient
 from langchain_mongodb.vectorstores import MongoDBAtlasVectorSearch
-from langchain.llms import OpenAI
+from langchain_openai import OpenAI
 from langchain.retrievers import ContextualCompressionRetriever
 from langchain.retrievers.document_compressors import LLMChainExtractor
 from langchain_openai import OpenAIEmbeddings

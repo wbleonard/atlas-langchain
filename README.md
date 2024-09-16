@@ -101,6 +101,7 @@ embeddings = OpenAIEmbeddings(openai_api_key=params.OPENAI_API_KEY)
 You'll need a vector database to store the embeddings, and lucky for you MongoDB fits that bill. Even luckier for you, the folks at LangChain have a [MongoDB Atlas module](https://python.langchain.com/v0.2/docs/integrations/vectorstores/mongodb_atlas/) that will do all the heavy lifting for you! Don't forget to add your MongoDB Atlas connection string to [params.py](params.py).
 
 ```python
+# Step 4: Store
 from pymongo import MongoClient
 from langchain_mongodb.vectorstores import MongoDBAtlasVectorSearch
 
@@ -113,11 +114,36 @@ docsearch = MongoDBAtlasVectorSearch.from_documents(
 )
 ```
 
-Lastly, we need to created the vector search index, which Langchain can do for us as well:
+#### Step 5: Index the Vector Embeddings
+The final step before we can query the data is to create a [search index on the stored embeddings](https://www.mongodb.com/docs/atlas/atlas-search/field-types/knn-vector/). 
+
+If you're on Atlas dedicated compute, Langchain can do this for you. 
+
 ```python
 # Step 5: Create Vector Search Index
-docsearch.create_vector_search_index(dimensions=1536)
+# THIS ONLY WORKS ON DEDICATED CLUSTERS (M10+)
+docsearch.create_vector_search_index(dimensions=1536, update=True)
 ```
+If you are on shared compute (M0, M2 or M5), in the Atlas console, create a Atlas Vector Search `langchain_vsearch_index` with the following definition: 
+
+```JSON
+{
+    "fields": [
+    {
+      "type": "vector",
+      "path": "embedding",
+      "numDimensions": 1536,
+      "similarity": "cosine"
+    }
+  ]
+}
+```
+
+![](./images/create-search-index.png)
+
+![](./images/create-search-index2.png)
+
+![](./images/create-search-index3.png)
 
 You'll find the complete script in [vectorize.py](vectorize.py), which needs to be run only once or when new data sources are added.
 
