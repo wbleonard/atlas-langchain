@@ -9,11 +9,11 @@ That graphic is from the team over at [LangChain](https://python.langchain.com/d
 
 In this tutorial, we'll walk through each of these steps, using MongoDB Atlas as our Store. Specifically, we'll use the [AT&T](https://en.wikipedia.org/wiki/AT%26T) and [Bank of America](https://en.wikipedia.org/wiki/Bank_of_America) Wikipedia pages as our data source. We'll then use libraries from LangChain to Load, Transform, Embed and Store: 
 
-![](./images/flow-store.png)
+![](https://raw.githubusercontent.com/wbleonard/atlas-langchain/main/images/flow-store.png)
 
 Once the source is store is stored in MongoDB, we can retrieve the data that interests us:
 
-![](./images/flow-retrieve.png)
+![](https://raw.githubusercontent.com/wbleonard/atlas-langchain/main/images/flow-retrieve.png)
 
 
 ## Prerequisites
@@ -139,11 +139,11 @@ If you are on shared compute (M0, M2 or M5), in the Atlas console, create a Atla
 }
 ```
 
-![](./images/create-search-index.png)
+![](https://raw.githubusercontent.com/wbleonard/atlas-langchain/main/images/create-search-index.png)
 
-![](./images/create-search-index2.png)
+![](https://raw.githubusercontent.com/wbleonard/atlas-langchain/main/images/create-search-index2.png)
 
-![](./images/create-search-index3.png)
+![](https://raw.githubusercontent.com/wbleonard/atlas-langchain/main/images/create-search-index3.png)
 
 You'll find the complete script in [vectorize.py](vectorize.py), which needs to be run only once or when new data sources are added.
 
