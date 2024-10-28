@@ -25,7 +25,7 @@ Once the source is store is stored in MongoDB, we can retrieve the data that int
 ```zsh
 git clone https://github.com/wbleonard/atlas-langchain.git
 ```
-2. Update [params.py](params.py) with your MongoDB connection string and Open AI [API key](https://platform.openai.com/account/api-keys).
+2. Update [params.py](https://github.com/wbleonard/atlas-langchain/blob/main/params.py) with your MongoDB connection string and Open AI [API key](https://platform.openai.com/account/api-keys).
 3. Create a new Python environment
 ```zsh
 python3 -m venv env
@@ -145,7 +145,7 @@ If you are on shared compute (M0, M2 or M5), in the Atlas console, create a Atla
 
 ![](https://raw.githubusercontent.com/wbleonard/atlas-langchain/main/images/create-search-index3.png)
 
-You'll find the complete script in [vectorize.py](vectorize.py), which needs to be run only once or when new data sources are added.
+You'll find the complete script in [vectorize.py](https://github.com/wbleonard/atlas-langchain/blob/main/vectorize.py), which needs to be run only once or when new data sources are added.
 
 ```zsh
 python3 vectorize.py
